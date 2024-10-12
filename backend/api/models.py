@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.db import models
+
 class Job(models.Model):
     # Existing fields from the Job model
     title = models.CharField(max_length=200)
@@ -14,9 +16,11 @@ class Job(models.Model):
     location = models.CharField(max_length=100)
     company_name = models.CharField(max_length=100)
     posted_at = models.DateTimeField(auto_now_add=True)
+    salary = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
         return self.title
+
 
 class JobApplication(models.Model):
     job = models.ForeignKey(Job, related_name='applications', on_delete=models.CASCADE)

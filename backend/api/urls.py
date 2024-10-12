@@ -1,6 +1,7 @@
 from django.urls import path, include
-from .views import CreateJobView
+from .views import JobListCreateView, JobApplicationAPIView
 
 urlpatterns = [
-    path('api/create-job/', CreateJobView.as_view(), name="create-job"),
+    path('api/job/', JobListCreateView.as_view(), name="job-api"), 
+    path('api/job-applications/', JobApplicationAPIView.as_view(), name="job-application-api"), 
 ]

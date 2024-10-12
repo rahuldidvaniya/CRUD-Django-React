@@ -45,7 +45,13 @@ INSTALLED_APPS = [
     "rest_framework",
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Adjust this to match your React app's URL
+]
+
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",

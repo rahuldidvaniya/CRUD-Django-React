@@ -1,0 +1,45 @@
+/* HeroSection.css */
+@import './base.css'; /* Import base CSS file to inherit styles */
+
+.hero-section {
+  position: relative; /* Position relative to allow absolute positioning of overlay */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full height of the viewport */
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-overlay {
+  position: absolute; /* Position overlay absolutely within hero-section */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Black overlay with 50% opacity */
+  z-index: 1; /* Place overlay above the background image */
+}
+
+.hero-title {
+  color: white;
+  font-weight: 900;
+  z-index: 2; 
+  text-align: center; 
+  
+}
+
+.hero-subtitle {
+  color: var(--highlight-color);
+  z-index: 2; /* Place text above the overlay */
+  text-align: center; /* Center text */
+  margin-top: 15px;
+}
+
+.hero-buttons {
+  margin-top: 1rem; /* Space between title and buttons */
+  z-index: 2; /* Place buttons above the overlay */
+  display: flex; /* Use flex to align buttons */
+  gap: 1rem; /* Space between buttons */
+}
