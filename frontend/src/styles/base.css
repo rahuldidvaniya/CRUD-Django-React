@@ -8,6 +8,13 @@
     --text-color: #3D405B; /* Dark Slate */
     --highlight-color: #E9C46A; /* Soft Yellow */
   }
+
+  @font-face {
+    font-family: 'Helvetica'; /* Name the font as you want to use it */
+    src: url('../Fonts/Helvetica.ttf') format('truetype'); /* Define the path to the font */
+    font-weight: normal;
+    font-style: normal;
+  }
   
   /* Global styles */
   body {
@@ -15,6 +22,8 @@
     font-family: 'Roboto', sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
+    
+    
   }
   
   h1, h2, h3, h4, h5, h6 {

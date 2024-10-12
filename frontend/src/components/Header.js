@@ -4,28 +4,41 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
+import '../styles/Header.css';
 
 const Header = () => {
   return (
-    <AppBar position="static">
-      <Toolbar>
-      <Typography
-      variant="h6"
-      component={Link}
-      to={'/'}
-      sx={{
-        flexGrow: 1,
-        color: 'white', // Set color to white
-        textDecoration: 'none', // Remove underline from link
-        fontWeight: 'bold',
-        fontSize: 22,
-     
+    <AppBar
+      position="absolute" 
+      sx={{ 
+        backgroundColor: 'rgba(25, 118, 210, 0.7)',
+        boxShadow: 'none',
+        color: 'white', 
       }}
     >
-      ApplyNow
-    </Typography>
-        <Button component={Link} to={"/create-job"} color="inherit">Create Job Posting</Button>
-        <Button component={Link} to={"/apply-jobs"} color="inherit">Apply Jobs</Button>
+      <Toolbar>
+        <Typography
+          className="logo"
+          variant="p"
+          component={Link}
+          to={'/'}
+          sx={{
+            flexGrow: 1,
+            color: 'white', // Set color to white
+            textDecoration: 'none', // Remove underline from link
+            fontWeight: 'bold',
+            fontSize: 22,
+          }}
+        >
+          ApplyNow
+        </Typography>
+        <Button className='nav-link' component={Link} to={"/create-job"} sx={{ color: 'white' }}>
+          Create Job Posting
+        </Button>
+        <Button className='nav-link' component={Link} to={"/apply-jobs"} sx={{ color: 'white' }}>
+          Apply Jobs
+        </Button>
+        <Button className='nav-link' component={Link} to={"/jobs-applications"} sx={{ color: 'white' }}>View Job Applications</Button>
       </Toolbar>
     </AppBar>
   );

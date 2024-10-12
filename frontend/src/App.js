@@ -5,6 +5,7 @@ import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import JobPostingForm from './components/JobPostingForm';
 import JobListing from './components/JobListing';
+import JobApplicationsList from './components/JobApplicationList';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/" element={<HeroSection />} />
         <Route path="/create-job" element={<JobPostingForm />} />
         <Route path="/apply-jobs" element={<JobListing />} />
+        <Route path="/jobs-applications" element={<JobApplicationsList />} />
         {/* Add more routes as needed */}
       </Routes>
     </Router>

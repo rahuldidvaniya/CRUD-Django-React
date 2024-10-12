@@ -1,0 +1,32 @@
+@import './base.css';
+
+.logo {
+ 
+   font-weight: 900;
+   font-size: 40px;
+}
+.app-bar {
+    background-color: rgba(25, 118, 210, 0.7);
+    box-shadow: none;
+    color: white;
+  }
+  
+  .link {
+    flex-grow: 1;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 22px;
+  }
+  
+  .button {
+    color: white;
+  }
+  
+.nav-link {
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--highlight-color)
+}

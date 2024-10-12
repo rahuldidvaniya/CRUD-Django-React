@@ -14,11 +14,12 @@ const HeroSection = () => {
     >
       <div className="hero-overlay" /> {/* Add the overlay div */}
 
-      <Typography className="hero-title" variant="h1">
-        Welcome to ApplyNow
+      <Typography className="hero-title" variant="p">
+      Connecting Talent with Opportunity 
+      
       </Typography>
-      <Typography className="hero-subtitle" variant="h4">
-        Find Your Dream Job or Post a New One
+      <Typography className="hero-subtitle" variant="p">
+      Post or Apply Now!
       </Typography>
       <Box className="hero-buttons">
         <Button

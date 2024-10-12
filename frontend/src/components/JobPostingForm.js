@@ -8,7 +8,7 @@ const JobPostingForm = () => {
   const [job_type, setJobType] = useState('');
   const [location, setLocation] = useState('');
   const [company_name, setCompanyName] = useState('');
-  const [salary, setSalary] = useState(''); // New state for salary
+  const [salary, setSalary] = useState(''); 
 
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ const JobPostingForm = () => {
       job_type, 
       location, 
       company_name,
-      salary // Include salary in jobData
+      salary
     };
 
     try {
@@ -34,9 +34,9 @@ const JobPostingForm = () => {
       });
 
       if (response.ok) {
-        navigate('/'); // Adjust the path as needed
+        navigate('/'); 
       } else {
-        const errorData = await response.json(); // Get error response for debugging
+        const errorData = await response.json(); 
         console.error('Failed to create job posting:', errorData);
       }
     } catch (error) {
@@ -53,7 +53,7 @@ const JobPostingForm = () => {
         backgroundColor: '#FFFFFF',
         borderRadius: 2,
         boxShadow: 3,
-        marginTop: 3,
+        marginTop: 10,
       }}
     >
       <Typography
@@ -124,7 +124,7 @@ const JobPostingForm = () => {
           value={salary}
           onChange={(e) => setSalary(e.target.value)}
           required
-          type="number" // Ensure this field accepts numbers
+          type="number" 
         />
         <Button variant="contained" color="primary" type="submit" sx={{ marginTop: 2 }}>
           Submit Job Posting
