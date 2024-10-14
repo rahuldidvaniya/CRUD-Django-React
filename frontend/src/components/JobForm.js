@@ -77,19 +77,23 @@ const JobForm = ({ job, onClose }) => {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 500, // Set a smaller fixed width for the modal
+          width: 500, 
           maxHeight: '90vh',
           bgcolor: 'background.paper',
           boxShadow: 24,
           borderRadius: 2,
-          p: 3, // Increased padding for better spacing
+          p: 3, 
           outline: 'none',
           overflowY: 'auto'
         }}
       >
-        <Typography variant="h6" component="h2" sx={{ mb: 2, textAlign: 'center', fontWeight: 'bold' }}>
-          Job Application
-        </Typography>
+         <Typography
+        variant="h4"
+        gutterBottom
+        sx={{ fontWeight: 'bold', color: '#FFFFFF', textAlign: 'center', backgroundColor: '#007BFF', padding: 2, borderRadius: 1 }}
+      >
+        Job Application
+      </Typography>
         <Typography variant="body1" sx={{ mb: 2 }}>
           Applying for: <strong>{job.title}</strong> at <strong>{job.company_name}</strong>
         </Typography>
@@ -127,16 +131,17 @@ const JobForm = ({ job, onClose }) => {
           onChange={handleChange}
           sx={{ mb: 1 }}
         />
-        <TextField
-          fullWidth
-          label="Experience"
-          name="experience"
-          multiline
-          rows={1}
-          value={formData.experience}
-          onChange={handleChange}
-          sx={{ mb: 1 }}
-        />
+       <TextField
+  fullWidth
+  label="Experience"
+  name="experience"
+  type="number"  // Set type to number
+  value={formData.experience}
+  onChange={handleChange}
+  inputProps={{ min: 0, step: 0.1 }}  // Set min to 0 and step to 0.1
+  sx={{ mb: 1 }}
+/>
+
         <TextField
           fullWidth
           label="Cover Letter"

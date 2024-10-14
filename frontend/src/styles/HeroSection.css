@@ -1,33 +1,32 @@
-/* HeroSection.css */
+
 @import './base.css'; /* Import base CSS file to inherit styles */
 
 @font-face {
-  font-family: 'Helvetica'; /* Name the font as you want to use it */
-  src: url('../Fonts/Helvetica.ttf') format('truetype'); /* Define the path to the font */
+  font-family: 'Helvetica'; 
+  src: url('../Fonts/Helvetica.ttf') format('truetype');
   font-weight: bolder;
   font-style: normal;
 }
 
 .hero-section {
-  position: relative; /* Position relative to allow absolute positioning of overlay */
+  position: relative; 
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* align-items: center; */
-  height: 100vh; /* Full height of the viewport */
+  height: 100vh; 
   background-size: cover;
   background-position: center;
-  gap: 15px
+  gap: 13px
 }
 
 .hero-overlay {
-  position: absolute; /* Position overlay absolutely within hero-section */
+  position: absolute; 
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7); /* Black overlay with 70% opacity */
-  z-index: 1; /* Place overlay above the background image */
+  background-color: rgba(0, 0, 0, 0.8); 
+  z-index: 1; 
 }
 
 .hero-title {
@@ -46,21 +45,21 @@
   text-align: center; 
   font-family: Helvetica, sans-serif;
   font-size: 30px;
-  margin-top: 50px;
+
 }
 
 .hero-buttons {
-  margin-top: 1rem; /* Space between title and buttons */
-  z-index: 2; /* Place buttons above the overlay */
-  display: flex; /* Use flex to align buttons */
-  gap: 1rem; /* Space between buttons */
+  margin-top: 1rem; 
+  z-index: 2;
+  display: flex; 
+  gap: 1rem;
   align-self: center;
 }
 
 .hero-button-contained {
-  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  transition: background-color 0.3s ease; 
 }
 
 .hero-button-contained:hover {
-  background-color: var(--highlight-color); /* Change color on hover */
+  background-color: var(--highlight-color); 
 }

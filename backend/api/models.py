@@ -1,6 +1,6 @@
 from django.db import models
-
-from django.db import models
+from django.utils import timezone
+import humanize
 
 class Job(models.Model):
     
@@ -24,13 +24,21 @@ class Job(models.Model):
 
 class JobApplication(models.Model):
     job = models.ForeignKey(Job, related_name='applications', on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=100)         
-    email = models.EmailField()                            
-    education = models.TextField(null=True, blank=True)    
-    experience = models.TextField(null=True, blank=True)  
-    resume = models.FileField(upload_to='resumes/')       
-    cover_letter = models.TextField(null=True, blank=True) 
-    applied_at = models.DateTimeField(auto_now_add=True)   
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    education = models.TextField(null=True, blank=True)
+    experience = models.TextField(null=True, blank=True)
+    resume = models.FileField(upload_to='resumes/')
+    cover_letter = models.TextField(null=True, blank=True)
+    applied_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Application from {self.full_name} for {self.job.title}"
+
+    @property
+    def job_title(self):
+        return self.job.title 
+
+    @property
+    def applied_time(self):
+        return humanize.naturaltime(timezone.now() - self.applied_at)  

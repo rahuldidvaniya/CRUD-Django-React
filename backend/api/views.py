@@ -18,10 +18,15 @@ class JobListCreateView(generics.ListCreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request, *args, **kwargs):
-        jobs = self.get_queryset()  # Retrieve the list of jobs
-        serializer = self.get_serializer(jobs, many=True)  # Serialize the list of jobs
-        return Response(serializer.data)  # Return the serialized data
+        jobs = self.get_queryset()  
+        serializer = self.get_serializer(jobs, many=True)  
+        return Response(serializer.data)  
     
+class JobUpdateView(generics.UpdateAPIView):
+    queryset = Job.objects.all()
+    serializer_class = JobSerializer
+    
+
 
 class JobApplicationAPIView(APIView):
     def get(self, request):

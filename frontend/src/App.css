@@ -1,4 +1,8 @@
+@import './styles/base.css';
 
+body {
+  font-family: Helvetica, sans-serif;
+}
 
 
 

@@ -24,8 +24,8 @@ const Header = () => {
           to={'/'}
           sx={{
             flexGrow: 1,
-            color: 'white', // Set color to white
-            textDecoration: 'none', // Remove underline from link
+            color: 'white', 
+            textDecoration: 'none', 
             fontWeight: 'bold',
             fontSize: 22,
           }}

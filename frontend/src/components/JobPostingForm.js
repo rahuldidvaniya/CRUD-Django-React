@@ -34,7 +34,8 @@ const JobPostingForm = () => {
       });
 
       if (response.ok) {
-        navigate('/'); 
+        navigate('/');
+       
       } else {
         const errorData = await response.json(); 
         console.error('Failed to create job posting:', errorData);
@@ -116,16 +117,18 @@ const JobPostingForm = () => {
           onChange={(e) => setCompanyName(e.target.value)}
           required
         />
-        <TextField
-          fullWidth
-          label="Salary"
-          variant="outlined"
-          margin="normal"
-          value={salary}
-          onChange={(e) => setSalary(e.target.value)}
-          required
-          type="number" 
-        />
+    <TextField
+  fullWidth
+  label="Salary"
+  variant="outlined"
+  margin="normal"
+  value={salary}
+  onChange={(e) => setSalary(e.target.value)}
+  required
+  type="number"
+  inputProps={{ min: 0 }}  
+/>
+
         <Button variant="contained" color="primary" type="submit" sx={{ marginTop: 2 }}>
           Submit Job Posting
         </Button>

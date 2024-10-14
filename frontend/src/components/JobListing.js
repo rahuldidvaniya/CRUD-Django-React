@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Card, CardContent, Typography, CardActions, Button, CircularProgress, Modal } from '@mui/material';
-import JobForm from './JobForm'; 
+import JobForm from './JobForm';
+import EditJobModal from './EditJobModal';  // Import the EditJobModal
 
 const jobTypeMapping = {
   'FT': 'Full-time',
@@ -18,35 +19,51 @@ const JobListing = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedJob, setSelectedJob] = useState(null);
-  const [open, setOpen] = useState(false);
+  const [openApplyModal, setOpenApplyModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false); // New state for edit modal
+
+  // Define fetchJobs function
+  const fetchJobs = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/job/');
+      if (!response.ok) {
+        throw new Error('Failed to fetch jobs');
+      }
+      const data = await response.json();
+      setJobs(data);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:8000/api/job/');
-        if (!response.ok) {
-          throw new Error('Failed to fetch jobs');
-        }
-        const data = await response.json();
-        setJobs(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchJobs();
+    fetchJobs(); 
   }, []);
 
   const handleApplyClick = (job) => {
     setSelectedJob(job);
-    setOpen(true);
+    setOpenApplyModal(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleEditClick = (job) => {
+    setSelectedJob(job);
+    setOpenEditModal(true); // Open the edit modal
+  };
+
+  const handleCloseApplyModal = () => {
+    setOpenApplyModal(false);
     setSelectedJob(null);
+  };
+
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false);
+    setSelectedJob(null);
+  };
+
+  const handleSaveJobEdit = async () => {
+    await fetchJobs(); 
   };
 
   const handleDeleteJob = async (jobId) => {
@@ -86,7 +103,7 @@ const JobListing = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 4 }}>
       <Typography variant="h3" component="h1" sx={{ mb: 4, marginTop: 7, fontWeight: 'bold', color: 'rgba(25, 118, 210)'}}>
-      Recommended jobs for you
+      RECOMMENDED JOBS FOR YOU 
       </Typography>
       {jobs.map((job) => (
         <Card
@@ -124,15 +141,18 @@ const JobListing = () => {
             <Button size="small" variant="contained" color="primary" onClick={() => handleApplyClick(job)}>
               Apply Now
             </Button>
-            <Button size="small" variant="outlined" color="error" onClick={() => handleDeleteJob(job.id)}>
+            <Button size="small" variant="contained" color="warning" onClick={() => handleEditClick(job)}>
+              Edit Job Details
+            </Button>
+            <Button size="small" variant="contained" color="error" onClick={() => handleDeleteJob(job.id)}>
               Delete Job
             </Button>
           </CardActions>
         </Card>
       ))}
 
-     
-      <Modal open={open} onClose={handleClose}>
+      {/* Apply Job Modal */}
+      <Modal open={openApplyModal} onClose={handleCloseApplyModal}>
         <Box sx={{ 
             display: 'flex', 
             flexDirection: 'column', 
@@ -147,9 +167,17 @@ const JobListing = () => {
             width: '80%',
             maxWidth: '600px'
         }}>
-          {selectedJob && <JobForm job={selectedJob} onClose={handleClose} />}
+          {selectedJob && <JobForm job={selectedJob} onClose={handleCloseApplyModal} />}
         </Box>
       </Modal>
+
+      {/* Edit Job Modal */}
+      <EditJobModal
+        open={openEditModal}
+        onClose={handleCloseEditModal}
+        job={selectedJob}
+        onSave={handleSaveJobEdit}
+      />
     </Box>
   );
 };
