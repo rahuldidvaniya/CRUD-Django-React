@@ -49,7 +49,7 @@ const JobForm = ({ job, onClose }) => {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/job-application/', {
+      const response = await fetch('http://127.0.0.1:8000/api/job-applications/', {
         method: 'POST',
         body: formDataToSubmit,
       });

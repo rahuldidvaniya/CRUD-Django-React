@@ -123,7 +123,7 @@ const JobListing = () => {
           <Card
             key={job.id}
             sx={{
-              width: '80%',
+              width: '50%',
               margin: 2,
               boxShadow: 3,
               padding: 2,
@@ -136,6 +136,17 @@ const JobListing = () => {
           >
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                
+                {job.logo && (
+                  <Box sx={{ marginRight: 2 }}>
+                    <img 
+                      src={`http://127.0.0.1:8000/media/${job.logo}`} 
+                      alt={`${job.company_name} logo`} 
+                      style={{ width: 150, height: 150, marginRight: 20, objectFit: 'cover', }} 
+                    />
+                  </Box>
+                )}
+
                 <Box sx={{ flexGrow: 1 }}>
                   <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
                     {job.title}

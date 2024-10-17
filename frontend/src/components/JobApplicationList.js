@@ -40,7 +40,7 @@ const JobApplicationsList = () => {
   };
 
   const handleDeleteApplication = async (applicationId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this job?");
+    const confirmDelete = window.confirm("Are you sure you want to delete this Application?");
 
     if(confirmDelete) {
       try {
@@ -48,7 +48,7 @@ const JobApplicationsList = () => {
           method: 'DELETE',
         });
         if(!response.ok) {
-          throw new Error('Failed to delete job');
+          throw new Error('Failed to delete application');
         }
          setApplications(applications.filter(application => application.id !== applicationId));
       } catch(error) {

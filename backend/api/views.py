@@ -7,21 +7,28 @@ from django.db import connection
 import os
 from django.conf import settings
 
+
+
 class JobListCreateView(APIView):
     def post(self, request, *args, **kwargs):
         job_data = request.data
-
-    
         serializer = JobSerializer(data=job_data)
+        
         if serializer.is_valid():
             try:
-                logo = None
+                logo = request.FILES.get('logo')
 
-                
-                if 'logo' in request.FILES:  
-                    logo_file = request.FILES['logo']
-                    logo = logo_file.read()
-                    print(f"Logo file size: {len(logo)} bytes") 
+                if logo:
+                    logo_path = os.path.join('company-logos', logo.name)
+                    full_logo_path = os.path.join(settings.MEDIA_ROOT, logo_path)
+                    os.makedirs(os.path.dirname(full_logo_path), exist_ok=True)
+                    
+                  
+                    with open(full_logo_path, 'wb+') as destination:
+                        for chunk in logo.chunks():
+                            destination.write(chunk)
+                else:
+                    logo_path = None
 
                 with connection.cursor() as cursor:
                     cursor.callproc('create_job', [
@@ -31,23 +38,24 @@ class JobListCreateView(APIView):
                         serializer.validated_data['location'],     
                         serializer.validated_data['company_name'],
                         serializer.validated_data['salary'],        
-                        logo                                    
+                        logo_path 
                     ])
 
-               
                 return Response({"message": "Job created successfully"}, status=status.HTTP_201_CREATED)
 
             except Exception as e:
                 return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     def get(self, request, *args, **kwargs):
         try:
        
             with connection.cursor() as cursor:
                 cursor.execute("SELECT get_all_jobs();")  
-                jobs = cursor.fetchone()[0]  
+                jobs = cursor.fetchone()[0]
+
+
+            
 
            
             return Response(jobs, status=status.HTTP_200_OK)
@@ -140,7 +148,6 @@ class JobApplicationView(APIView):
         try:
             with connection.cursor() as cursor:
                 cursor.execute("SELECT * FROM public.get_all_job_applications()")
-                # Extract the column names correctly
                 columns = [col.name for col in cursor.description]
                 job_applications = [
                     dict(zip(columns, row))
@@ -151,70 +158,20 @@ class JobApplicationView(APIView):
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# class JobUpdateView(generics.UpdateAPIView):
-#     queryset = Job.objects.all()
-#     serializer_class = JobSerializer
-    
-# class JobApplicationAPIView(APIView):
-#     def get(self, request):
-#         applications = JobApplication.objects.all()
-#         serializer = JobApplicationSerializer(applications, many=True)
-#         return Response(serializer.data)
-
-#     def post(self, request):
-#         serializer = JobApplicationSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-# class JobDeleteView(APIView):
-
-#     def delete(self, request, pk, format=None):
-#         try:
-#             job = Job.objects.get(pk=pk)
-#         except Job.DoesNotExist:
-#             raise NotFound(detail="Job not found")
-
-#         job.delete()
-#         return Response({"message": "Job deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
-
-# class JobApplicationListView(generics.ListAPIView):
-#     queryset = JobApplication.objects.all()
-#     serializer_class = JobApplicationSerializer
-    
-
-# class JobApplicationDeleteView(APIView):
-
-#     def delete(self, reqeuest, pk, format=None):
-#         try:
-#             job_application = JobApplication.objects.get(pk=pk)
-#         except JobApplication.DoesNotExist:
-#             raise NotFound(detail="Job Application not found")
         
-#         job_application.delete()
-#         return Response({"message": "Job Application Deleted sucessfully"}, status=status.HTTP_204_NO_CONTENT)
+
+
+class JobApplicationDeleteView(APIView):
+    
+    def delete(self, request, pk, format=None):
+        try:
+            with connection.cursor() as cursor:
+                cursor.callproc('delete_job_application', [pk])
+
+            return Response({"message":  "Application deleted sucessfully"}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
 
