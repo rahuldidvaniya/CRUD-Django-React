@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Card, CardContent, Typography, CircularProgress, Modal } from '@mui/material';
+import { Box, Card, CardContent, Typography, CircularProgress, Modal, Button } from '@mui/material';
 import ApplicationDetails from './ApplicationDetails'; 
 
 const JobApplicationsList = () => {
+
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,7 +13,7 @@ const JobApplicationsList = () => {
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/applications/'); // API endpoint for applications
+        const response = await fetch('http://127.0.0.1:8000/api/job-applications/'); // API URL
         if (!response.ok) {
           throw new Error('Failed to fetch applications');
         }
@@ -28,7 +29,7 @@ const JobApplicationsList = () => {
     fetchApplications();
   }, []);
 
-  const handleApplicationClick = (application) => {
+  const handleViewApplicationClick = (application) => {
     setSelectedApplication(application); 
     setOpen(true); 
   };
@@ -38,9 +39,28 @@ const JobApplicationsList = () => {
     setSelectedApplication(null); 
   };
 
+  const handleDeleteApplication = async (applicationId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this job?");
+
+    if(confirmDelete) {
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/api/applications/${applicationId}/delete/`, {
+          method: 'DELETE',
+        });
+        if(!response.ok) {
+          throw new Error('Failed to delete job');
+        }
+         setApplications(applications.filter(application => application.id !== applicationId));
+      } catch(error) {
+        console.error('Error deleting application:', error);
+      }
+     
+    }
+  };
+
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', marginTop: 4 }}>
         <CircularProgress />
       </Box>
     );
@@ -48,7 +68,7 @@ const JobApplicationsList = () => {
 
   if (error) {
     return (
-      <Typography variant="h6" color="error" sx={{ textAlign: 'center', marginTop: 4 }}>
+      <Typography variant="h3" color="error" sx={{ display: 'flex', justifyContent:  'center', alignItems: 'center', height: '100vh', textAlign: 'center', marginTop: 4 }}>
         {error}
       </Typography>
     );
@@ -67,7 +87,8 @@ const JobApplicationsList = () => {
             width: '80%',
             margin: 2,
             boxShadow: 3,
-            padding: 2,
+            padding: 1,
+            paddingBottom: 1,
             borderRadius: 2,
             transition: '0.3s',
             cursor: 'pointer',
@@ -75,7 +96,7 @@ const JobApplicationsList = () => {
               boxShadow: 6,
             },
           }}
-          onClick={() => handleApplicationClick(application)}
+         
         >
           <CardContent>
             <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
@@ -87,6 +108,17 @@ const JobApplicationsList = () => {
             <Typography variant="body2" color="text.secondary">
               Experience: {application.experience} years
             </Typography>
+            <Button color='primary' size='small' sx={{ marginRight: 2, marginTop: 2, }}variant='contained' onClick={() => handleViewApplicationClick(application)} >View Application</Button>
+            <Button
+            variant='contained'
+            size='small'
+            color='error'
+            sx={{
+              marginTop: 2,
+            }}
+            onClick={() => handleDeleteApplication(application.id)}>
+              Delete Application
+            </Button>
           </CardContent>
         </Card>
       ))}

@@ -38,7 +38,9 @@ const Header = () => {
         <Button className='nav-link' component={Link} to={"/apply-jobs"} sx={{ color: 'white' }}>
           Apply Jobs
         </Button>
-        <Button className='nav-link' component={Link} to={"/jobs-applications"} sx={{ color: 'white' }}>View Job Applications</Button>
+        <Button className='nav-link' component={Link} to={"/jobs-applications"} sx={{ color: 'white' }}>
+        View Job Applications
+        </Button>
       </Toolbar>
     </AppBar>
   );

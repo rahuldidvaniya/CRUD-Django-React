@@ -51,8 +51,8 @@ const EditJobModal = ({ open, onClose, job, onSave }) => {
         throw new Error('Failed to submit the form');
       }
 
-      onSave();
-      onClose();
+      onSave();  
+      onClose(); 
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -71,14 +71,14 @@ const EditJobModal = ({ open, onClose, job, onSave }) => {
           display: 'flex',
           flexDirection: 'column',
           gap: 2,
-          padding: 2,
+          padding: 4,
           backgroundColor: 'white',
-          width: '80%',
-          maxHeight: '80vh', // Set max height
+          width: '60%',
+          maxHeight: '80vh',
           borderRadius: 1,
-          overflowY: 'auto', // Enable vertical scroll if content overflows
-          boxShadow: 24, // Add a shadow for a better look
-          outline: 'none', // Remove default outline
+          overflowY: 'auto',
+          boxShadow: 24,
+          outline: 'none',
         }}
       >
         <TextField
@@ -128,6 +128,9 @@ const EditJobModal = ({ open, onClose, job, onSave }) => {
         />
         <Button type="submit" variant="contained" color="primary">
           Save Changes
+        </Button>
+        <Button variant="outlined" onClick={onClose} color="primary">
+          Cancel
         </Button>
       </Box>
     </Modal>

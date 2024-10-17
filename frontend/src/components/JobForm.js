@@ -135,10 +135,10 @@ const JobForm = ({ job, onClose }) => {
   fullWidth
   label="Experience"
   name="experience"
-  type="number"  // Set type to number
+  type="number"  
   value={formData.experience}
   onChange={handleChange}
-  inputProps={{ min: 0, step: 0.1 }}  // Set min to 0 and step to 0.1
+  inputProps={{ min: 0, step: 0.1 }}  
   sx={{ mb: 1 }}
 />
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Card, CardContent, Typography, CardActions, Button, CircularProgress, Modal } from '@mui/material';
 import JobForm from './JobForm';
-import EditJobModal from './EditJobModal';  // Import the EditJobModal
+import EditJobModal from './EditJobModal'; 
 
 const jobTypeMapping = {
   'FT': 'Full-time',
@@ -20,17 +20,25 @@ const JobListing = () => {
   const [error, setError] = useState(null);
   const [selectedJob, setSelectedJob] = useState(null);
   const [openApplyModal, setOpenApplyModal] = useState(false);
-  const [openEditModal, setOpenEditModal] = useState(false); // New state for edit modal
+  const [openEditModal, setOpenEditModal] = useState(false); 
 
-  // Define fetchJobs function
   const fetchJobs = async () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/api/job/');
       if (!response.ok) {
         throw new Error('Failed to fetch jobs');
       }
-      const data = await response.json();
-      setJobs(data);
+      const dataString = await response.json();
+      console.log('Fetched data string:', dataString); 
+
+      const data = JSON.parse(dataString); 
+
+      if (Array.isArray(data)) {
+          setJobs(data);
+      } else {
+          console.warn('Expected an array, received:', data);
+          setJobs([]); 
+      }
     } catch (error) {
       setError(error.message);
     } finally {
@@ -49,7 +57,7 @@ const JobListing = () => {
 
   const handleEditClick = (job) => {
     setSelectedJob(job);
-    setOpenEditModal(true); // Open the edit modal
+    setOpenEditModal(true); 
   };
 
   const handleCloseApplyModal = () => {
@@ -76,7 +84,7 @@ const JobListing = () => {
         if (!response.ok) {
           throw new Error('Failed to delete job');
         }
-        // Remove the deleted job from the state
+      
         setJobs(jobs.filter(job => job.id !== jobId));
       } catch (error) {
         console.error('Error deleting job:', error);
@@ -86,7 +94,7 @@ const JobListing = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', marginTop: 4 }}>
         <CircularProgress />
       </Box>
     );
@@ -94,7 +102,7 @@ const JobListing = () => {
 
   if (error) {
     return (
-      <Typography variant="h6" color="error" sx={{ textAlign: 'center', marginTop: 4 }}>
+      <Typography variant="h3" color="error" sx={{ display: 'flex', textAlign: 'center', justifyContent: 'center', height: '100vh', alignItems: 'center', marginTop: 4 }}>
         {error}
       </Typography>
     );
@@ -102,56 +110,66 @@ const JobListing = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 4 }}>
-      <Typography variant="h3" component="h1" sx={{ mb: 4, marginTop: 7, fontWeight: 'bold', color: 'rgba(25, 118, 210)'}}>
-      RECOMMENDED JOBS FOR YOU 
+      <Typography variant="h3" component="h1" sx={{ mb: 4, marginTop: 7, fontWeight: 'bold', color: 'rgba(25, 118, 210)' }}>
+        RECOMMENDED JOBS FOR YOU 
       </Typography>
-      {jobs.map((job) => (
-        <Card
-          key={job.id}
-          sx={{
-            width: '80%',
-            margin: 2,
-            boxShadow: 3,
-            padding: 2,
-            borderRadius: 2,
-            transition: '0.3s',
-            '&:hover': {
-              boxShadow: 6,
-            },
-          }}
-        >
-          <CardContent>
-            <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
-              {job.title}
-            </Typography>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              {job.company_name} - {jobTypeMapping[job.job_type] || job.job_type}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {job.description}
-            </Typography>
-            <Typography variant="h6" sx={{ mt: 2 }}>
-              Location: {job.location}
-            </Typography>
-            <Typography variant="h6" sx={{ mt: 1 }}>
-              Salary: ₹{formatSalary(job.salary)} CTC
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small" variant="contained" color="primary" onClick={() => handleApplyClick(job)}>
-              Apply Now
-            </Button>
-            <Button size="small" variant="contained" color="warning" onClick={() => handleEditClick(job)}>
-              Edit Job Details
-            </Button>
-            <Button size="small" variant="contained" color="error" onClick={() => handleDeleteJob(job.id)}>
-              Delete Job
-            </Button>
-          </CardActions>
-        </Card>
-      ))}
-
-      {/* Apply Job Modal */}
+  
+      {jobs.length === 0 ? (
+        <Typography variant="h5" sx={{ mt: 4, color: 'gray', textAlign: 'center' }}>
+          No jobs available at the moment. Please check back later.
+        </Typography>
+      ) : (
+        jobs.map((job) => (
+          <Card
+            key={job.id}
+            sx={{
+              width: '80%',
+              margin: 2,
+              boxShadow: 3,
+              padding: 2,
+              borderRadius: 2,
+              transition: '0.3s',
+              '&:hover': {
+                boxShadow: 6,
+              },
+            }}
+          >
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ flexGrow: 1 }}>
+                  <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
+                    {job.title}
+                  </Typography>
+                  <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                    {job.company_name} - {jobTypeMapping[job.job_type] || job.job_type}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {job.description}
+                  </Typography>
+                  <Typography variant="h6" sx={{ mt: 2 }}>
+                    Location: {job.location}
+                  </Typography>
+                  <Typography variant="h6" sx={{ mt: 1 }}>
+                    Salary: ₹{formatSalary(job.salary)} CTC
+                  </Typography>
+                </Box>
+              </Box>
+            </CardContent>
+            <CardActions>
+              <Button size="small" variant="contained" color="primary" onClick={() => handleApplyClick(job)}>
+                Apply Now
+              </Button>
+              <Button size="small" variant="contained" color="warning" onClick={() => handleEditClick(job)}>
+                Edit Job Details
+              </Button>
+              <Button size="small" variant="contained" color="error" onClick={() => handleDeleteJob(job.id)}>
+                Delete Job
+              </Button>
+            </CardActions>
+          </Card>
+        ))
+      )}
+  
       <Modal open={openApplyModal} onClose={handleCloseApplyModal}>
         <Box sx={{ 
             display: 'flex', 
@@ -170,8 +188,7 @@ const JobListing = () => {
           {selectedJob && <JobForm job={selectedJob} onClose={handleCloseApplyModal} />}
         </Box>
       </Modal>
-
-      {/* Edit Job Modal */}
+  
       <EditJobModal
         open={openEditModal}
         onClose={handleCloseEditModal}
@@ -180,6 +197,7 @@ const JobListing = () => {
       />
     </Box>
   );
+  
 };
 
 export default JobListing;

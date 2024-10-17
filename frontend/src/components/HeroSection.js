@@ -12,11 +12,10 @@ const HeroSection = () => {
         backgroundImage: `url(${heroImage})`,
       }}
     >
-      <div className="hero-overlay" /> {/* Add the overlay div */}
+      <div className="hero-overlay" /> 
 
       <Typography className="hero-title" variant="p">
       Connecting Talent with Opportunity 
-      
       </Typography>
       <Typography className="hero-subtitle" variant="p">
       Post or Apply Now!

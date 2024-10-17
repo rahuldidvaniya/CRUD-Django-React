@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Box, Button, TextField, Typography, FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const JobPostingForm = () => {
@@ -9,33 +9,34 @@ const JobPostingForm = () => {
   const [location, setLocation] = useState('');
   const [company_name, setCompanyName] = useState('');
   const [salary, setSalary] = useState(''); 
+  const [logo, setLogo] = useState(null);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const jobData = { 
-      title, 
-      description, 
-      job_type, 
-      location, 
-      company_name,
-      salary
-    };
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('job_type', job_type);
+    formData.append('location', location);
+    formData.append('company_name', company_name);
+    formData.append('salary', salary);
+    
+   
+    if (logo) {
+        formData.append('logo', logo);
+    }
 
     try {
       const response = await fetch('http://127.0.0.1:8000/api/job/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(jobData),
+        body: formData,
       });
 
       if (response.ok) {
-        navigate('/');
-       
+        navigate('/');        
       } else {
         const errorData = await response.json(); 
         console.error('Failed to create job posting:', errorData);
@@ -43,6 +44,10 @@ const JobPostingForm = () => {
     } catch (error) {
       console.error('Error:', error);
     }
+  };
+
+  const handleFileChange = (e) => {
+    setLogo(e.target.files[0]);
   };
 
   return (
@@ -117,17 +122,34 @@ const JobPostingForm = () => {
           onChange={(e) => setCompanyName(e.target.value)}
           required
         />
-    <TextField
-  fullWidth
-  label="Salary"
-  variant="outlined"
-  margin="normal"
-  value={salary}
-  onChange={(e) => setSalary(e.target.value)}
-  required
-  type="number"
-  inputProps={{ min: 0 }}  
-/>
+        <FormControl fullWidth sx={{ mb: 1 }}>
+          <input
+            accept="image/*"
+            id="logo"
+            type="file"
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+          />
+          <label htmlFor="logo">
+            <Button variant="contained" component="span">
+              Upload Company Logo
+            </Button>
+          </label>
+          {logo && (
+            <FormHelperText>{logo.name}</FormHelperText>
+          )}
+        </FormControl>
+        <TextField
+          fullWidth
+          label="Salary"
+          variant="outlined"
+          margin="normal"
+          value={salary}
+          onChange={(e) => setSalary(e.target.value)}
+          required
+          type="number"
+          inputProps={{ min: 0 }}  
+        />
 
         <Button variant="contained" color="primary" type="submit" sx={{ marginTop: 2 }}>
           Submit Job Posting
