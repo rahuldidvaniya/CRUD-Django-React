@@ -201,3 +201,5 @@ coverage/
 
 # Yarn
 yarn-error.log
+
+.env

@@ -9,12 +9,17 @@ const JobPostingForm = () => {
   const [location, setLocation] = useState('');
   const [company_name, setCompanyName] = useState('');
   const [salary, setSalary] = useState(''); 
+  const [salaryError, setSalaryError] = useState('');
   const [logo, setLogo] = useState(null);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateSalary()) {
+      return;
+    }
 
     const formData = new FormData();
     formData.append('title', title);
@@ -48,6 +53,24 @@ const JobPostingForm = () => {
 
   const handleFileChange = (e) => {
     setLogo(e.target.files[0]);
+  };
+
+  const validateSalary = () => {
+    if (isNaN(salary) || salary <= 0) {
+      setSalaryError('Please enter a valid salary greater than 0');
+      return false;
+    }
+    setSalaryError('');
+    return true;
+  };
+
+  const handleSalaryChange = (e) => {
+    setSalary(e.target.value);
+    if (e.target.value !== '') {
+      validateSalary();
+    } else {
+      setSalaryError('');
+    }
   };
 
   return (
@@ -145,10 +168,12 @@ const JobPostingForm = () => {
           variant="outlined"
           margin="normal"
           value={salary}
-          onChange={(e) => setSalary(e.target.value)}
+          onChange={handleSalaryChange}
           required
           type="number"
-          inputProps={{ min: 0 }}  
+          inputProps={{ min: 0 }}
+          error={!!salaryError}
+          helperText={salaryError}
         />
 
         <Button variant="contained" color="primary" type="submit" sx={{ marginTop: 2 }}>

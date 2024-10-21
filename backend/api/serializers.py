@@ -19,6 +19,6 @@ class JobApplicationSerializer(serializers.Serializer):
     email = serializers.EmailField()
     education = serializers.CharField(required=False, allow_blank=True)
     experience = serializers.CharField(required=False, allow_blank=True)
-    resume = serializers.FileField()  # `bytea` mapped to `FileField`
+    resume = serializers.FileField()  
     cover_letter = serializers.CharField(required=False, allow_blank=True)
-    applied_at = serializers.DateTimeField(read_only=True)  # `timestamp with timezone`
+    applied_at = serializers.DateTimeField(read_only=True)  

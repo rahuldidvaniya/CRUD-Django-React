@@ -7,11 +7,12 @@ const jobTypeMapping = {
   'FT': 'Full-time',
   'PT': 'Part-time',
   'CT': 'Contract',
-  'IN': 'Internship'
+  'IN': 'Internship',
+  'FL': 'Freelance'
 };
 
 const formatSalary = (salary) => {
-  return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(salary);
+  return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(salary);
 };
 
 const JobListing = () => {
@@ -28,10 +29,7 @@ const JobListing = () => {
       if (!response.ok) {
         throw new Error('Failed to fetch jobs');
       }
-      const dataString = await response.json();
-      console.log('Fetched data string:', dataString); 
-
-      const data = JSON.parse(dataString); 
+      const data = await response.json();
 
       if (Array.isArray(data)) {
           setJobs(data);
@@ -154,14 +152,17 @@ const JobListing = () => {
                   <Typography sx={{ mb: 1.5 }} color="text.secondary">
                     {job.company_name} - {jobTypeMapping[job.job_type] || job.job_type}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2">
                     {job.description}
                   </Typography>
-                  <Typography variant="h6" sx={{ mt: 2 }}>
+                  <Typography variant="body1" sx={{ mt: 2 }}>
                     Location: {job.location}
                   </Typography>
-                  <Typography variant="h6" sx={{ mt: 1 }}>
-                    Salary: ₹{formatSalary(job.salary)} CTC
+                  <Typography variant="body1" sx={{ mt: 1 }}>
+                    Salary: {formatSalary(job.salary)} per annum
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                    Posted on: {new Date(job.posted_at).toLocaleDateString()}
                   </Typography>
                 </Box>
               </Box>
@@ -208,7 +209,6 @@ const JobListing = () => {
       />
     </Box>
   );
-  
 };
 
 export default JobListing;
