@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS public.job
 TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public.job
-    OWNER to rahul;
+    OWNER to postgres;
 
 
 -- job application table
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS public.job_application
 TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public.job_application
-    OWNER to rahul;
+    OWNER to postgres;
 
 -- function to create a job
 CREATE OR REPLACE FUNCTION public.create_job(
@@ -119,7 +119,7 @@ END;
 $BODY$;
 
 ALTER FUNCTION public.delete_job(bigint)
-    OWNER TO rahul;
+    OWNER TO postgres;
 
 
 
@@ -139,7 +139,7 @@ END;
 $BODY$;
 
 ALTER FUNCTION public.delete_job_application(bigint)
-    OWNER TO rahul;
+    OWNER TO postgres;
 
 
 
@@ -225,4 +225,4 @@ END;
 $BODY$;
 
 ALTER FUNCTION public.get_all_jobs()
-    OWNER TO rahul;
+    OWNER TO postgres;
