@@ -117,8 +117,6 @@ The `db_functions.sql` file includes the following essential functions and table
 
 These tables and functions are integral to the application's interaction with job and job application records.
 
-These functions are integral to the application's interaction with job and job application records.
-
 ## Usage
 
 - Access the React frontend at http://localhost:3000
