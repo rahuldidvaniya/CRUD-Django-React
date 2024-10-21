@@ -1,4 +1,59 @@
 
+-- job table
+
+-- Table: public.job
+
+-- DROP TABLE IF EXISTS public.job;
+
+CREATE TABLE IF NOT EXISTS public.job
+(
+    id bigint NOT NULL DEFAULT nextval('job_id_seq'::regclass),
+    title text COLLATE pg_catalog."default" NOT NULL,
+    job_type character varying(2) COLLATE pg_catalog."default",
+    location text COLLATE pg_catalog."default" NOT NULL,
+    company_name text COLLATE pg_catalog."default" NOT NULL,
+    posted_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    salary numeric(10,2) NOT NULL,
+    logo text COLLATE pg_catalog."default",
+    description text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT job_pkey PRIMARY KEY (id),
+    CONSTRAINT check_job_type CHECK (job_type::text = ANY (ARRAY['FT'::character varying, 'PT'::character varying, 'CT'::character varying, 'IN'::character varying, 'FL'::character varying]::text[]))
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.job
+    OWNER to rahul;
+
+
+-- job application table
+-- Table: public.job_application
+
+-- DROP TABLE IF EXISTS public.job_application;
+
+CREATE TABLE IF NOT EXISTS public.job_application
+(
+    id bigint NOT NULL DEFAULT nextval('job_id_seq'::regclass),
+    job bigint NOT NULL,
+    full_name text COLLATE pg_catalog."default" NOT NULL,
+    email text COLLATE pg_catalog."default" NOT NULL,
+    education text COLLATE pg_catalog."default" NOT NULL,
+    experience text COLLATE pg_catalog."default" NOT NULL,
+    resume_path text COLLATE pg_catalog."default" NOT NULL,
+    cover_letter text COLLATE pg_catalog."default",
+    applied_at timestamp(5) with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT job_application_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_job_application_job FOREIGN KEY (job)
+        REFERENCES public.job (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.job_application
+    OWNER to rahul;
+
 -- function to create a job
 CREATE OR REPLACE FUNCTION public.create_job(
 	p_title text,

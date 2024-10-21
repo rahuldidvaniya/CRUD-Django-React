@@ -1,30 +1,29 @@
 # Job Portal - Django & React CRUD Application
 
-This project is a full-stack job portal application that allows users to perform CRUD (Create, Read, Update, Delete) operations on job listings. It is built using Django for the backend and React for the frontend, with PostgreSQL as the database.
+## Overview
 
-## Features
+This project is a comprehensive full-stack job portal application that facilitates CRUD (Create, Read, Update, Delete) operations on job listings. The application is built using Django for the backend, React for the frontend, and PostgreSQL as the database management system.
 
-- Add, update, view, and delete job listings.
-- Display job details, including company logo.
-- Download resumes associated with jobs.
-- REST API integration for seamless frontend-backend communication.
-- Uses Axios for API requests from the React frontend.
+## Key Features
 
-## Tech Stack
+- Robust job listing management (Create, Read, Update, Delete)
+- Detailed job information display
+- Seamless REST API integration for efficient frontend-backend communication
 
-- Backend: Django with PostgreSQL
+## Technology Stack
+
+- Backend: Django and Django REST Framework
 - Frontend: React.js
 - Database: PostgreSQL
-- API Requests: Axios
 
-## Installation
+## Installation and Setup
 
 ### Backend (Django)
 
 1. Clone the repository and navigate to the backend directory:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/rahuldidvaniya/crud-django-react.git
    cd backend
    ```
 
@@ -34,7 +33,7 @@ This project is a full-stack job portal application that allows users to perform
    pip install -r requirements.txt
    ```
 
-3. Set up PostgreSQL and configure your `settings.py`:
+3. Configure PostgreSQL in `settings.py`:
 
    ```python
    DATABASES = {
@@ -49,13 +48,13 @@ This project is a full-stack job portal application that allows users to perform
    }
    ```
 
-4. Run database migrations:
+4. Apply database migrations:
 
    ```bash
    python manage.py migrate
    ```
 
-5. Start the Django server:
+5. Launch the Django development server:
 
    ```bash
    python manage.py runserver
@@ -75,69 +74,67 @@ This project is a full-stack job portal application that allows users to perform
    npm install
    ```
 
-3. Run the frontend development server:
+3. Start the React development server:
 
    ```bash
    npm start
    ```
 
-### Setting Up PostgreSQL Functions
+### PostgreSQL Configuration
 
-To properly use this project, you must create the necessary PostgreSQL functions used for managing job records (e.g., getjobs, editJob, deleteJob, and addJob). Follow these steps to set up the required functions:
+To ensure proper functionality, it's crucial to set up the necessary PostgreSQL tables and functions for job record management. Follow these steps:
 
 1. Ensure PostgreSQL is running and connected to your database.
 
-2. Open a terminal and connect to your PostgreSQL database:
+2. Connect to your PostgreSQL database via terminal:
 
    ```bash
    psql -U <your_db_user> -d <your_db_name>
    ```
 
-3. Run the provided SQL script `db_functions.sql` to create the required functions:
+3. Execute the provided SQL script to create required functions:
 
    ```bash
    \i path/to/db/db_functions.sql
    ```
 
-### PostgreSQL Functions
+### PostgreSQL Function Overview
 
-The `db_functions.sql` file includes the following functions:
+The `db_functions.sql` file includes the following essential functions and table creation scripts:
 
-- `create_job`: Inserts a new job into the job table with details such as title, job type, location, company name, salary, and logo.
-- `edit_job`: Updates a specific job record based on job ID, modifying fields like title, description, job type, location, company name, and salary.
-- `delete_job`: Deletes a job from the job table by its ID.
-- `create_job_application`: Inserts a new job application into the job_application table with details such as job ID, applicant's name, email, education, experience, cover letter, and resume path.
-- `delete_job_application`: Deletes a specific job application from the job_application table by its ID.
-- `get_all_jobs`: Retrieves all job listings from the job table, including details like job title, type, location, company name, posting date, salary, logo, and description.
-- `get_all_job_applications`: Retrieves all job applications from the job_application table, including details such as the job ID, applicant's name, email, education, experience, cover letter, and resume path.
+- Table creation:
+  - `CREATE TABLE job`: Creates the job table
+  - `CREATE TABLE job_application`: Creates the job application table
 
-Once these functions are created, the application will use them to interact with job and job application records.
+- Functions:
+  - `create_job`: Inserts a new job record
+  - `edit_job`: Updates an existing job record
+  - `delete_job`: Removes a job record
+  - `create_job_application`: Inserts a new job application
+  - `delete_job_application`: Removes a job application
+  - `get_all_jobs`: Retrieves all job listings
+  - `get_all_job_applications`: Retrieves all job applications
 
-### Database Structure
+These tables and functions are integral to the application's interaction with job and job application records.
 
-The PostgreSQL database uses a table called `api_job` to store job information such as id, title, description, location, and logo.
+These functions are integral to the application's interaction with job and job application records.
 
-### Usage
+## Usage
 
-- Visit http://localhost:3000 to interact with the React frontend.
-- Use the job form to add new jobs, update existing ones, and delete them.
-- View all job listings along with company logos, and download attached resumes.
+- Access the React frontend at http://localhost:3000
+- Utilize the job management interface to add, update, and delete job listings
+- View comprehensive job listings, including company logos
+- Download attached resumes for job applications
 
-### API Endpoints
+## API Endpoints
 
-The API endpoints are built using Django REST framework and accessed via Axios in the frontend.
+The application exposes the following RESTful API endpoints:
 
-- `GET /api/jobs/`: Retrieve all job listings.
-- `POST /api/jobs/`: Create a new job listing.
-- `PUT /api/jobs/:id/`: Update a job listing.
-- `DELETE /api/jobs/:id/`: Delete a job listing.
+- `GET /api/job/`: Retrieve all job listings or create a new listing
+- `DELETE /api/job/<int:pk>/`: Delete a specific job listing
+- `PUT /api/job/<int:pk>/edit/`: Update a specific job listing
+- `GET /api/job-applications/`: Create a new job application
+- `DELETE /api/applications/<int:pk>/`: Delete a specific job application
+- `GET /api/resumes/<str:filename>/`: Download a specific resume
 
-### Folder Structure
-
-my-django-react-crud-app/
-├── backend/
-├── frontend/
-├── db/
-│   └── db_functions.sql
-└── README.md
-
+These endpoints are implemented using Django REST Framework and accessed via Axios in the frontend.
